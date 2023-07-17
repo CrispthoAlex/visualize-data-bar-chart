@@ -25,25 +25,29 @@ var svgContainer = d3
   .attr("width", w + 100)
   .attr("height", h + 60);
 
+const translateFn = (x, y = 0) => {
+  return `translate(${x}, ${y})`;
+};
+
 // Getting data and sets graphics elements
 d3.json(
   "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json"
 )
   .then((data) => {
     const series = [...data.data];
-    console.log(series);
+
     // title x
     svgContainer
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -180)
+      .attr("x", -200)
       .attr("y", 80)
       .text("Gross Domestic Product");
 
     // title y
     svgContainer
       .append("text")
-      .attr("x", w / 2 + 100)
+      .attr("x", w / 2 + 120)
       .attr("y", h + 50)
       .text("More Information: http://www.bea.gov/national/pdf/nipaguid.pdf")
       .attr("class", "info");
@@ -53,10 +57,6 @@ d3.json(
       var quarter;
       var temp = d[0].substring(5, 7);
 
-      // if (temp == "01") quarter = "Q1";
-      // if (temp == "04") quarter = "Q2";
-      // if (temp == "07") quarter = "Q3";
-      // if (temp == "10") quarter = "Q4";
       switch (temp) {
         case "01":
           quarter = "Q1";
@@ -78,12 +78,10 @@ d3.json(
     const yearsDate = series.map((d) => {
       return new Date(d[0]);
     });
-    console.log("yearsDate", yearsDate);
 
     const xMax = new Date(d3.max(yearsDate));
     xMax.setMonth(xMax.getMonth() + 3);
-    console.log("xMax", xMax);
-    console.log("d3", d3);
+
     const xScale = d3
       .scaleTime()
       .domain([d3.min(yearsDate), xMax])
@@ -95,8 +93,8 @@ d3.json(
     svgContainer
       .append("g")
       .call(xAxis)
-      .attr("id", "xAxis")
-      .attr("transform", "translate(60, 400)");
+      .attr("id", "x-axis")
+      .attr("transform", translateFn(60, 400));
 
     const GDP = series.map((d) => d[1]);
 
@@ -109,14 +107,15 @@ d3.json(
     scaleGDP = GDP.map((value) => linearScale(value));
 
     var yAxisScale = d3.scaleLinear().domain([0, gdpMax]).range([h, 0]);
-
+    console.log("yAxisScale", yAxisScale);
     var yAxis = d3.axisLeft(yAxisScale);
+    console.log("yAxis", yAxis);
 
     svgContainer
       .append("g")
       .call(yAxis)
       .attr("id", "y-axis")
-      .attr("tranform", "translate(60, 0)");
+      .attr("transform", translateFn(60, 0));
 
     d3.select("svg")
       .selectAll("rect")
@@ -127,26 +126,28 @@ d3.json(
       .attr("data-gdp", (d, i) => series[i][1])
       .attr("class", "bar")
       .attr("x", (d, i) => xScale(yearsDate[i]))
-      .attr("y", (d) => h - d)
+      .attr("y", function (d) {
+        return h - d;
+      })
       .attr("width", barWidth)
       .attr("height", (d) => d)
       .attr("index", (d, i) => i)
       .style("fill", "#33adff")
-      .attr("transform", "translate(60, 0)")
-      .on("mouseover", (event, d) => {
+      .attr("transform", translateFn(60, 0))
+      .on("mouseover", function (event, d) {
         // d or datum is the height of the
         // current rect
-        var i = d3.getAttribute("index");
+        var i = this.getAttribute("index");
 
         overlay
           .transition()
           .duration(0)
-          .style("height", d + px)
-          .style("width", barWidth + px)
+          .style("height", d + "px")
+          .style("width", barWidth + "px")
           .style("opacity", 0.85)
           .style("left", i * barWidth + 0 + "px")
           .style("top", h - d + "px")
-          .style("transform", "translate(60px)");
+          .style("transform", translateFn("60px"));
 
         tooltip.transition().duration(200).style("opacity", 0.9);
         tooltip
@@ -160,11 +161,11 @@ d3.json(
           .attr("data-date", series[i][0])
           .style("left", i * barWidth + 30 + "px")
           .style("top", h - 100 + "px")
-          .style("transform", "translate(60px)");
+          .style("transform", translateFn("60px"));
       })
       .on("mouseout", () => {
-        tooltip.transition().duration(200).style("opacity");
-        overlay.transition().duration(200).style("opacity");
+        tooltip.transition().duration(200).style("opacity", 0);
+        overlay.transition().duration(200).style("opacity", 0);
       });
   })
   .catch((e) => console.log(e));
