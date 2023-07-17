@@ -17,6 +17,10 @@ Build an app that is functionally similar to this: https://bar-chart.freecodecam
 - CSS
 - D3 svg-based visualization library.
 
+### See you for yourself
+
+[Visualization Data with a Bar Chart - page](https://crispthoalex.github.io/visualize-data-bar-chart/)
+
 <div id="badges" align="center">
   <h5>Develope by</h5>
   <h4><strong> Crispthofer Rincon</strong></h4>
