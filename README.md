@@ -24,13 +24,13 @@ Build an app that is functionally similar to this: https://bar-chart.freecodecam
 <div id="badges" align="center">
   <h5>Develope by</h5>
   <h4><strong> Crispthofer Rincon</strong></h4>
-  <a href="https://linkedin.com/in/carmurrain">
+  <a href="https://linkedin.com/in/carmurrain" target="_blank">
   <img src="https://img.shields.io/badge/LinkedIn-orange?logo=linkedin&logoColor=black" alt="LinkedIn Badge" />
   </a>
-  <a href="https://twitter.com/crispthoalex">
+  <a href="https://twitter.com/crispthoalex" target="_blank">
     <img src="https://img.shields.io/badge/Twitter-orange?logo=twitter&logoColor=black" alt="Twitter Badge"/>
   </a>
-  <a href="https://www.hackerrank.com/crispthoalex" target="blank">
+  <a href="https://www.hackerrank.com/crispthoalex" target="_blank">
     <img src="https://img.shields.io/badge/Hackerrank-orange?logo=hackerrank&logoColor=black" alt="Twitter Badge"/>
   </a>
 </div>
